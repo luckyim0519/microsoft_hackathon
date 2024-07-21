@@ -37,7 +37,6 @@ class MapComponent extends React.Component {
       });
 
 
-
       const infowindow = new google.maps.InfoWindow({
         content: `
         <div>
