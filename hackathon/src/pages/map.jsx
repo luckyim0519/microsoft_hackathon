@@ -1,5 +1,6 @@
 import React from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+import axios from 'axios'; // Import Axios for HTTP requests
 
 class MapComponent extends React.Component {
   state = {
@@ -36,38 +37,42 @@ class MapComponent extends React.Component {
         title: location.name
       });
 
-    //   try {
-    //     const response = await axios.get('https://api.unsplash.com/photos/random', {
-    //       params: {
-    //         query: `${location.name}`, // Replace with your query
-    //         client_id: '91OB51_j4Er03DZxO-FM8i1LkZZWzTvqkGqW64pOeKA', // Replace with your Unsplash Access Key
-    //       }
-    //     });
+      try {
+        const response = await axios.get('https://api.unsplash.com/photos/random', {
+          params: {
+            query: `${location.name}`, // Replace with your query
+            client_id: 'A94WrKCk5YHTPvyjpzlwIzXd-HtHDSqP1LNCVvGI1nI', // Replace with your Unsplash Access Key
+          }
+        });
     
-    //     // Handle the response data
-    //     console.log(response.data);
+        // Handle the response data
+        console.log(response.data);
     
-    //     // Process the response data as needed (extract image URLs, etc.)
-    //     const imageUrl = response.data.urls.regular; // Example: accessing regular-sized image
+        // Process the response data as needed (extract image URLs, etc.)
+        const imageUrl = response.data.urls.regular; // Example: accessing regular-sized image
     
-    //     // Use the imageUrl in your component state or JSX rendering
-    //     // setState({ imageUrl });
-    
-    //   } catch (error) {
-    //     console.error('Error fetching images from Unsplash:', error);
-    //   }
+        // Use the imageUrl in your component state or JSX rendering
+        // setState({ imageUrl });
+        const infowindow = new google.maps.InfoWindow({
+            content: `
+            <div>
+              <h2>${location.name}</h2>
+              <p>${location.address}</p>
+              <img src = "${imageUrl}" style={{ width: '50px', height: '200px' }}</img>
+            </div>`
+          });
 
-      const infowindow = new google.maps.InfoWindow({
-        content: `
-        <div>
-          <h2>${location.name}</h2>
-          <p>${location.address}</p>
-        </div>`
-      });
+          marker.addListener('click', () => {
+            infowindow.open(map, marker);
+          });
+    
+      } catch (error) {
+        console.error('Error fetching images from Unsplash:', error);
+      }
 
-      marker.addListener('click', () => {
-        infowindow.open(map, marker);
-      });
+      
+
+      
     });
   };
 
