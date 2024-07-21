@@ -31,41 +31,35 @@ function Results() {
     const message = `Help me plan a trip to ${response.destination}. Fill in this list with locations: locations = [{lat: , lng: , name: , address:}]
 `;
 
-    async function main() {
-      const completion = await openai.chat.completions.create({
-        messages: [{ role: "system", content: message }],
-        model: "gpt-4o-mini",
-      });
+async function main() {
+  try {
+    const completion = await openai.chat.completions.create({
+      messages: [{ role: "system", content: message }],
+      model: "gpt-4o-mini",
+    });
 
-<<<<<<< HEAD
-      const location = completion.choices[0].message.content;
-      const first = location.indexOf("[");
-      const end = location.indexOf("]");
-      const locationsText = location.substring(first, end + 1);
-      try {
-        const finalLocations = JSON.parse(locationsText);
-        const locationNames = finalLocations.map(loc => loc.name);
-        setItinerary(locationNames.join(', '));
-      } catch (error) {
-        console.error("Failed to parse itinerary:", error);
-        setItinerary("Error parsing itinerary.");
-      }
-  
-=======
-      const location = completion.choices[0].message.content
-      const first = location.indexOf("[")
-      const end = location.indexOf("]")
-      const locationsText = location.substring(first, end + 1);
-      const finalLocations = JSON.parse(locationsText);
-      console.log(finalLocations);
-      setFinalLocations(finalLocations)
+    const location = completion.choices[0].message.content;
+    const first = location.indexOf("[");
+    const end = location.indexOf("]");
+    const locationsText = location.substring(first, end + 1);
 
->>>>>>> 600bc265f225178aad0a8cacff1909bb03a071cd
-      console.log(completion.choices[0]);
-    }
-  
-    main();
-  }, [response.destination]); // Added dependency array
+    // Parse the JSON string to an array of location objects
+    const finalLocations = JSON.parse(locationsText);
+
+    // Extract the 'name' property from each location object
+    const locationNames = finalLocations.map(loc => loc.name);
+
+    // Join the location names into a single string to display
+    setItinerary(locationNames.join(', '));
+  } catch (error) {
+    console.error("Failed to parse itinerary or fetch data:", error);
+    setItinerary("Error parsing itinerary or fetching data.");
+  }
+}
+
+// Call the main function to fetch and process the itinerary
+main();
+}, [response.destination]); // 
 
   return (
     <div>
