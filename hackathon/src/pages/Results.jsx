@@ -9,9 +9,7 @@ function Results() {
   const { state: { response } = {} } = useLocation();
   const [itinerary, setItinerary] = useState([]);
   const [history, setHistory] = useState("");
-  const [finalLocations, setFinalLocations] = useState([]);
-  const [loading, setLoading] = useState(true); // State to manage loading animation
-  const [coords, setCoords] = useState([]);
+  const [coords, setCoords] = useState([])
 
   const defaultOptions = {
     loop: true,
@@ -50,11 +48,6 @@ function Results() {
         const endIndex = responseText.lastIndexOf("]");
         const locationsText = responseText.substring(startIndex, endIndex + 1);
 
-
-        const locations = JSON.parse(locationsText);
-        console.log(locations)
-
-        setFinalLocations(locations);
         const itineraryObj = JSON.parse(locationsText);
         setItinerary(itineraryObj);
 
@@ -66,10 +59,6 @@ function Results() {
         );
 
         setCoords(coordinates.flat())
-
-
-        setItinerary(completion.choices[0].message.content);
-        setLoading(false); // Set loading state to false after data is fetched
       } catch (error) {
         console.error("Error fetching recommendations from OpenAI:", error);
       }
@@ -100,7 +89,7 @@ function Results() {
 
   return (
     <div className="h-screen max-h-svh min-h-svh">
-      {loading ? ( // Display loading animation while fetching data
+      {itinerary.length == 0 || coords.length == 0 ? ( // Display loading animation while fetching data
         <div className="flex flex-col gap-8 text-center m-auto pt-48">
           <h1 className="text-2xl font-semibold">
             AI is planning your itinerary
@@ -148,7 +137,7 @@ function Results() {
                 );
               })}
             </ul>
-            <MapComponent google={window.google} locations={coords} />
+            {/* <MapComponent google={window.google} locations={coords} /> */}
           </div>
         </div>
       )}
