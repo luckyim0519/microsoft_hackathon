@@ -9,9 +9,16 @@ class MapComponent extends React.Component {
   renderMap = () => {
     const { google, locations } = this.props;
 
+    // Calculate center of all markers
+    const bounds = new google.maps.LatLngBounds();
+    locations.forEach(location => {
+      bounds.extend(new google.maps.LatLng(location.lat, location.lng));
+    });
+    const center = bounds.getCenter();
+
     const map = new google.maps.Map(document.getElementById('map'), {
-      center: { lat: 40.7128, lng: -74.0060 }, // Default center (New York City)
-      zoom: 12
+      center: center, // Center of all markers
+      zoom: 10.5
     });
 
     this.renderMarkers(map, locations); // Call method to render markers
@@ -47,4 +54,3 @@ class MapComponent extends React.Component {
 export default GoogleApiWrapper({
   apiKey: 'AIzaSyBkBj17X-zv50p4aHszSfjAsINjqpcSofQ' // Replace with your Google Maps API key
 })(MapComponent);
-

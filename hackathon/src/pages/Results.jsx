@@ -19,55 +19,48 @@ function Results() {
   const { state: { response } = {} } = useLocation();
 
   const [itinerary, setItinerary] = useState("");
-  const [finalLocations, setFinalLocations] = useState("")
+  const [finalLocation, setFinalLocation] = useState([])
 
-  console.log(response)
 
   useEffect(()=>{
     const key = "";
 
     const openai = new OpenAI({ apiKey: "sk-None-LzkASTDUaEkaIMYZdKhDT3BlbkFJWGAGvI4TnJSw2hZiL1qi", dangerouslyAllowBrowser: true });
 
-    const message = `Help me plan a trip to ${response.destination}. Fill in this list with locations: locations = [{lat: , lng: , name: , address:}]
+    const message = `Help me plan a trip to ${response.destination}. I like ${response.activity.join(",")} activities, with a ${response.vibe.join(",")} vibe, and my budget of ${response.budget.join(",")}
+    Fill in this list with locations: locations = [{"lat": number, "lng": number, "name": string, "address": string}]
 `;
 
-async function main() {
-  try {
-    const completion = await openai.chat.completions.create({
-      messages: [{ role: "system", content: message }],
-      model: "gpt-4o-mini",
-    });
+    async function main() {
+      const completion = await openai.chat.completions.create({
+        messages: [{ role: "system", content: message }],
+        model: "gpt-4o-mini",
+      });
 
-    const location = completion.choices[0].message.content;
-    const first = location.indexOf("[");
-    const end = location.indexOf("]");
-    const locationsText = location.substring(first, end + 1);
+      const location = completion.choices[0].message.content
+      const first = location.indexOf("[")
+      const end = location.indexOf("]")
+      const locationsText = location.substring(first, end + 1);
 
-    // Parse the JSON string to an array of location objects
-    const finalLocations = JSON.parse(locationsText);
+      const finalLocations = JSON.parse(locationsText);
+      console.log(finalLocations);
+      setFinalLocation(finalLocations)
 
-    // Extract the 'name' property from each location object
-    const locationNames = finalLocations.map(loc => loc.name);
+      // console.log(completion.choices[0]);
+      setItinerary(completion.choices[0].message.content)
+    }
 
-    // Join the location names into a single string to display
-    setItinerary(locationNames.join(', '));
-  } catch (error) {
-    console.error("Failed to parse itinerary or fetch data:", error);
-    setItinerary("Error parsing itinerary or fetching data.");
-  }
-}
+    main();
+  }, [])
 
-// Call the main function to fetch and process the itinerary
-main();
-}, [response.destination]); // 
+
 
   return (
     <div>
       <p>This trip is powered by AI</p>
-      <h1>Your trip to {response.destination}</h1>
+      <h1>Your trip to {response.destination} that has {response.activity.join(', ')} activities, with a {response.vibe.join(", ")} vibe, and fits the {response.budget.join(", ")} budget</h1>
       <p>{itinerary}</p>
-      
-      <MapComponent locations={temp} />
+      {finalLocation.length > 0 && <MapComponent google={window.google} locations={finalLocation} />}
     </div>
   )
 }
