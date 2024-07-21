@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import MapComponent from './map'; // Adjust the path as needed
 
 import OpenAI from "openai";
