@@ -1,69 +1,109 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import MapComponent from './map'; // Adjust the path as needed
-
 import OpenAI from "openai";
 
-
-// const url = process.env.REACT_APP_OPENAI_API;
-
 function Results() {
-
   const { state: { response } = {} } = useLocation();
-
   const [itinerary, setItinerary] = useState("");
   const [history, setHistory] = useState("");
-  const [finalLocation, setFinalLocation] = useState([])
+  const [recommendations, setRecommendations] = useState([]);
+  const [finalLocations, setFinalLocations] = useState([]);
 
-
-  useEffect(()=>{
-    const key = "";
-
+  useEffect(() => {
     const openai = new OpenAI({ apiKey: "sk-None-LzkASTDUaEkaIMYZdKhDT3BlbkFJWGAGvI4TnJSw2hZiL1qi", dangerouslyAllowBrowser: true });
 
-    const message = `Help me plan a trip to ${response.destination}. I like ${response.activity.join(",")} activities, with a ${response.vibe.join(",")} vibe, and my budget of ${response.budget.join(",")}
-    Fill in this list with locations: locations = [{"lat": number, "lng": number, "name": string, "address": string}]
-`;
+    async function fetchRecommendations() {
+      try {
+        const message = `Help me plan a trip to ${response.destination}. I like ${response.activity.join(", ")} activities, with a ${response.vibe.join(", ")} vibe, and my budget of ${response.budget.join(", ")}. Fill in this list with locations: locations = [{"lat": number, "lng": number, "name": string, "address": string}]`;
+        const completion = await openai.chat.completions.create({
+          messages: [{ role: "system", content: message }],
+          model: "gpt-4o-mini",
+        });
 
-    async function main() {
-      const completion = await openai.chat.completions.create({
-        messages: [{ role: "system", content: message }],
-        model: "gpt-4o-mini",
-      });
+        const responseText = completion.choices[0].message.content;
+        const startIndex = responseText.indexOf("[");
+        const endIndex = responseText.indexOf("]");
+        const locationsText = responseText.substring(startIndex, endIndex + 1);
 
-      const hist = await openai.chat.completions.create({
-        messages: [{ role: "system", content: `Tell me a little about ${response.destination}` }],
-        model: "gpt-4o-mini",
-      });
-      setHistory(hist.choices[0].message.content)
+        const locations = JSON.parse(locationsText);
+        setFinalLocations(locations);
 
-      const location = completion.choices[0].message.content
-      const first = location.indexOf("[")
-      const end = location.indexOf("]")
-      const locationsText = location.substring(first, end + 1);
+        const recommendationText = responseText.substring(endIndex + 1).trim();
+        const parsedRecommendations = JSON.parse(recommendationText);
+        setRecommendations(parsedRecommendations);
 
-      const finalLocations = JSON.parse(locationsText);
-      console.log(finalLocations);
-      setFinalLocation(finalLocations)
-
-      // console.log(completion.choices[0]);
-      setItinerary(completion.choices[0].message.content)
+        setItinerary(completion.choices[0].message.content);
+      } catch (error) {
+        console.error('Error fetching recommendations from OpenAI:', error);
+      }
     }
 
-    main();
-  }, [])
+    async function fetchHistory() {
+      try {
+        const histCompletion = await openai.chat.completions.create({
+          messages: [{ role: "system", content: `Tell me a little about ${response.destination}` }],
+          model: "gpt-4o-mini",
+        });
 
+        setHistory(histCompletion.choices[0].message.content);
+      } catch (error) {
+        console.error('Error fetching history from OpenAI:', error);
+      }
+    }
 
+    fetchRecommendations();
+    fetchHistory();
+  }, [response.destination, response.activity, response.vibe, response.budget]);
 
   return (
     <div>
       <p>This trip is powered by AI</p>
-      <h1>Your trip to {response.destination} that has {response.activity.join(', ')} activities, with a {response.vibe.join(", ")} vibe, and fits the {response.budget.join(", ")} budget</h1>
-      <h2>{history}</h2>
+      <h1>Your trip to {response.destination} includes...</h1>
+      <p>Activities: {response.activity.join(', ')}</p>
+      <p>Vibe: {response.vibe.join(", ")}</p>
+      <p>Budget: {response.budget.join(", ")}</p>
+      <h2>Recommendations:</h2>
+      {recommendations.map((recommendation, index) => (
+        <div key={index}>
+          <RecommendationDetails recommendation={recommendation} />
+        </div>
+      ))}
+      <h2>History:</h2>
+      <p>{history}</p>
+      <h2>Itinerary:</h2>
       <p>{itinerary}</p>
-      {finalLocation.length > 0 && <MapComponent google={window.google} locations={finalLocation} />}
+      {finalLocations.length > 0 && (
+        <div>
+          <h2>Recommended Locations:</h2>
+          {finalLocations.map((location, index) => (
+            <div key={index}>
+              <LocationDetails location={location} />
+            </div>
+          ))}
+          <MapComponent google={window.google} locations={finalLocations} />
+        </div>
+      )}
     </div>
-  )
+  );
 }
 
-export default Results
+function RecommendationDetails({ recommendation }) {
+  return (
+    <div>
+      <h3>{recommendation.title}</h3>
+      <p>{recommendation.description}</p>
+    </div>
+  );
+}
+
+function LocationDetails({ location }) {
+  return (
+    <div>
+      <h3>{location.name}</h3>
+      <p>Address: {location.address}</p>
+    </div>
+  );
+}
+
+export default Results;
