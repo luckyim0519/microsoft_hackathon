@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import MapComponent from './map'; // Adjust the path as needed
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import MapComponent from "./map"; // Adjust the path as needed
 import OpenAI from "openai";
 import Lottie from "react-lottie";
 import preloader from "../assets/preloader.json";
 
 function Results() {
   const { state: { response } = {} } = useLocation();
-  const [itinerary, setItinerary] = useState("");
+  const [itinerary, setItinerary] = useState([]);
   const [history, setHistory] = useState("");
+<<<<<<< Updated upstream
   const [recommendations, setRecommendations] = useState([]);
   const [finalLocations, setFinalLocations] = useState([]);
   const [loading, setLoading] = useState(true); // State to manage loading animation
+=======
+  const [coords, setCoords] = useState([]);
+>>>>>>> Stashed changes
 
   const defaultOptions = {
     loop: true,
@@ -23,11 +27,22 @@ function Results() {
   };
 
   useEffect(() => {
-    const openai = new OpenAI({ apiKey: "sk-None-LzkASTDUaEkaIMYZdKhDT3BlbkFJWGAGvI4TnJSw2hZiL1qi", dangerouslyAllowBrowser: true });
+    const openai = new OpenAI({
+      apiKey: "sk-None-LzkASTDUaEkaIMYZdKhDT3BlbkFJWGAGvI4TnJSw2hZiL1qi",
+      dangerouslyAllowBrowser: true,
+    });
 
     async function fetchRecommendations() {
       try {
-        const message = `Help me plan a trip to ${response.destination}. I like ${response.activity.join(", ")} activities, with a ${response.vibe.join(", ")} vibe, and my budget of ${response.budget.join(", ")}. Fill in this list with locations: locations = [{"lat": number, "lng": number, "name": string, "address": string}]`;
+        const message = `Help me plan a trip to ${
+          response.destination
+        }. I like ${response.activity.join(
+          ", "
+        )} activities, with a ${response.vibe.join(
+          ", "
+        )} vibe, and my budget is ${response.budget.join(
+          ", "
+        )} out of $$$$. Give me a full day of itinerary as an array of objects in this format: [{dayNumber: number, dayTitle: string, daySummary: string, locations = [{"desc": string (two line description of location), "lat": number (latitude), "lng": number (longitude), "name": string (location name), "address": string (location address), "commute": {"method": string (walking or driving), "time": number (commute time from previous location)})}]}]. Do not include additional text in unspecified format. Please generate three days.`;
         const completion = await openai.chat.completions.create({
           messages: [{ role: "system", content: message }],
           model: "gpt-4o-mini",
@@ -35,44 +50,67 @@ function Results() {
 
         const responseText = completion.choices[0].message.content;
         const startIndex = responseText.indexOf("[");
-        const endIndex = responseText.indexOf("]");
+        const endIndex = responseText.lastIndexOf("]");
         const locationsText = responseText.substring(startIndex, endIndex + 1);
 
+<<<<<<< Updated upstream
         const locations = JSON.parse(locationsText);
         console.log(locations)
 
         setFinalLocations(locations);
+=======
+        const itineraryObj = JSON.parse(locationsText);
+        setItinerary(itineraryObj);
 
-        const recommendationText = responseText.substring(endIndex + 1).trim();
-        const parsedRecommendations = JSON.parse(recommendationText);
-        setRecommendations(parsedRecommendations);
+        const coordinates = itineraryObj.map((day) =>
+          day.locations.map((location) => ({
+            lat: location.lat,
+            lng: location.lng,
+          }))
+        );
 
+        setCoords(coordinates.flat())
+        console.log(coordinates)
+>>>>>>> Stashed changes
+
+
+<<<<<<< Updated upstream
         setItinerary(completion.choices[0].message.content);
         setLoading(false); // Set loading state to false after data is fetched
       } catch (error) {
         console.error('Error fetching recommendations from OpenAI:', error);
         setLoading(false); // Ensure loading state is false even on error
+=======
+      } catch (error) {
+        console.error("Error fetching recommendations from OpenAI:", error);
+>>>>>>> Stashed changes
       }
     }
 
     async function fetchHistory() {
       try {
         const histCompletion = await openai.chat.completions.create({
-          messages: [{ role: "system", content: `Tell me a little about ${response.destination}` }],
+          messages: [
+            {
+              role: "system",
+              content: `Tell me a little about ${response.destination}. Keep this to three sentences.`,
+            },
+          ],
           model: "gpt-4o-mini",
         });
 
         setHistory(histCompletion.choices[0].message.content);
       } catch (error) {
-        console.error('Error fetching history from OpenAI:', error);
+        console.error("Error fetching history from OpenAI:", error);
       }
     }
 
     fetchRecommendations();
     fetchHistory();
-  }, [response.destination, response.activity, response.vibe, response.budget]);
+  }, []);
 
   return (
+<<<<<<< Updated upstream
     <div className='h-screen max-h-svh min-h-svh'>
       {loading ? ( // Display loading animation while fetching data
         <div className="flex flex-col gap-8 text-center m-auto pt-48">
@@ -99,36 +137,57 @@ function Results() {
           <h2>Itinerary:</h2>
           <p>{itinerary}</p>
           {finalLocations.length > 0 && (
+=======
+    <div>
+      <div>
+        {itinerary.length == 0 || coords.length == 0 ? (
+          <div className="flex flex-col gap-8 text-center m-auto pt-48">
+            <h1 className="text-2xl font-semibold">
+              AI is planning your itinerary
+            </h1>
+            <Lottie options={defaultOptions} width={500} />
+          </div>
+        ) : (
+          <div>
+            <p>This trip is powered by AI</p>
+            <h1 className="text-4xl font-bold">Your trip to {response.destination}</h1>
+            <p>{history}</p>
+>>>>>>> Stashed changes
             <div>
-              <h2>Recommended Locations:</h2>
-              {finalLocations.map((location, index) => (
-                <div key={index}>
-                  <LocationDetails location={location} />
-                </div>
-              ))}
-              <MapComponent google={window.google} locations={finalLocations} />
+              <ul>
+                {itinerary.map(function displayItinerary(day, index){
+                  return (
+                    <div key={index}>
+                      <h3 className="text-xl font-bold">{`Day ${day.dayNumber}: ${day.dayTitle}`}</h3>
+                      <p className="mb-4">{day.daySummary}</p>
+                      <ul>
+                        {day.locations.map((location, index) => {
+                          return (
+                            <li className="flex flex-row gap-8 items-start" key={index}>
+                              <p>{index + 1}</p>
+                              <div>
+                                <h4 className="text-lg font-semibold">
+                                  {location.name}
+                                </h4>
+                                <p>{location.desc}</p>
+                                <p>{`${location.commute.time} minute ${location.commute.method == "walking" ? "walk" : "drive"}`}</p>
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  );
+                })}
+              </ul>
+              <MapComponent
+                google={window.google}
+                locations={coords}
+              />
             </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function RecommendationDetails({ recommendation }) {
-  return (
-    <div>
-      <h3>{recommendation.title}</h3>
-      <p>{recommendation.description}</p>
-    </div>
-  );
-}
-
-function LocationDetails({ location }) {
-  return (
-    <div>
-      <h3>{location.name}</h3>
-      <p>Address: {location.address}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

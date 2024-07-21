@@ -7,9 +7,25 @@ import { cities } from "../data/cities"
 
 function Form() {
   const navigate = useNavigate()
-  const activity = ["Art", "Cultural", "Historic", "Outdoor", "Shopping", "Workshops", "Nightlife", "Entertainment"]
+  const activity = [
+    "Art",
+    "Culture",
+    "Entertainment",
+    "Local",
+    "Nature and Wildlife",
+    "Nightlife",
+    "Outdoor",
+    "Shopping",
+  ];
   const budget = ["$", "$$", "$$$", "$$$$"]
-  const vibe = ["Adventurous", "Relaxing", "Romantic", "Kid-friendly"]
+  const vibe = [
+    "Adventurous",
+    "Exciting",
+    "Family-Friendly",
+    "Relaxing",
+    "Luxurious"
+  ];
+
   
   const [response, setResponse] = useState({
     destination: "",
