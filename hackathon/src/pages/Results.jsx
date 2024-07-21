@@ -36,26 +36,31 @@ function Results() {
         model: "gpt-4o-mini",
       });
 
-      const location = completion.choices[0].message.content
-      const first = location.indexOf("[")
-      const end = location.indexOf("]")
-      // const locationsText = text.substring(first, end + 1);
-      // const finalLocations = JSON.parse(locationsText);
-
+      const location = completion.choices[0].message.content;
+      const first = location.indexOf("[");
+      const end = location.indexOf("]");
+      const locationsText = location.substring(first, end + 1);
+      try {
+        const finalLocations = JSON.parse(locationsText);
+        const locationNames = finalLocations.map(loc => loc.name);
+        setItinerary(locationNames.join(', '));
+      } catch (error) {
+        console.error("Failed to parse itinerary:", error);
+        setItinerary("Error parsing itinerary.");
+      }
+  
       console.log(completion.choices[0]);
-      setItinerary(completion.choices[0].message.content)
     }
-
+  
     main();
-  }, [])
-
-
+  }, [response.destination]); // Added dependency array
 
   return (
     <div>
       <p>This trip is powered by AI</p>
       <h1>Your trip to {response.destination}</h1>
       <p>{itinerary}</p>
+      
       <MapComponent locations={temp} />
     </div>
   )
