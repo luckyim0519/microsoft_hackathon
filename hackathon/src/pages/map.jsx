@@ -18,7 +18,7 @@ class MapComponent extends React.Component {
 
     const map = new google.maps.Map(document.getElementById('map'), {
       center: center, // Center of all markers
-      zoom: 12
+      zoom: 10.5
     });
 
     this.renderMarkers(map, locations); // Call method to render markers

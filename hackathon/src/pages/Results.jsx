@@ -27,7 +27,8 @@ function Results() {
 
     const openai = new OpenAI({ apiKey: "sk-None-LzkASTDUaEkaIMYZdKhDT3BlbkFJWGAGvI4TnJSw2hZiL1qi", dangerouslyAllowBrowser: true });
 
-    const message = `Help me plan a trip to ${response.destination}. Fill in this list with locations: locations = [{"lat": number, "lng": number, "name": string, "address": string}]
+    const message = `Help me plan a trip to ${response.destination}. I like ${response.activity.join(",")} activities, with a ${response.vibe.join(",")} vibe, and my budget of ${response.budget.join(",")}
+    Fill in this list with locations: locations = [{"lat": number, "lng": number, "name": string, "address": string}]
 `;
 
     async function main() {
@@ -57,7 +58,7 @@ function Results() {
   return (
     <div>
       <p>This trip is powered by AI</p>
-      <h1>Your trip to {response.destination}</h1>
+      <h1>Your trip to {response.destination} that has {response.activity.join(', ')} activities, with a {response.vibe.join(", ")} vibe, and fits the {response.budget.join(", ")} budget</h1>
       <p>{itinerary}</p>
       {finalLocation.length > 0 && <MapComponent google={window.google} locations={finalLocation} />}
     </div>
