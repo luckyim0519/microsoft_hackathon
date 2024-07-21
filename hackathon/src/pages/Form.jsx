@@ -37,11 +37,13 @@ function Form() {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-4">Tell me about your trip</h1>
+    <div className="max-w-lg pt-12">
+      <h1 className="text-4xl font-bold mb-6">Tell me about your trip</h1>
       <form className="flex flex-col gap-4 mb-8">
         <div className="flex flex-col gap-1">
-          <label>Where are you going?</label>
+          <label className="font-semibold text-base mb-2">
+            Where are you going?
+          </label>
           <div className="px-4 flex flex-row items-center gap-2 text-sm outline outline-gray-300 rounded-lg">
             <MagnifyingGlassIcon className="w-5 h-5 text-gray-600" />
             <input
@@ -53,8 +55,10 @@ function Form() {
           </div>
         </div>
         <div>
-          <label>What activities are you interested in?</label>
-          <ul className="flex flex-row gap-2">
+          <label className="font-semibold text-base">
+            What activities are you interested in?
+          </label>
+          <ul className="flex flex-row gap-2 mt-2 flex-wrap">
             {activity.map((option) => (
               <Chip
                 value={option}
@@ -65,8 +69,10 @@ function Form() {
           </ul>
         </div>
         <div>
-          <label>What kind of trip are you looking forward to?</label>
-          <ul className="flex flex-row gap-2">
+          <label className="font-semibold text-base">
+            What kind of trip are you looking forward to?
+          </label>
+          <ul className="flex flex-row gap-2 mt-2 flex-wrap">
             {vibe.map((option) => (
               <Chip
                 value={option}
@@ -77,8 +83,10 @@ function Form() {
           </ul>
         </div>
         <div>
-          <label>What is your budget?</label>
-          <ul className="flex flex-row gap-2">
+          <label className="font-semibold text-base">
+            What is your budget?
+          </label>
+          <ul className="flex flex-row gap-2 mt-2 flex-wrap">
             {budget.map((option) => (
               <Chip
                 value={option}
