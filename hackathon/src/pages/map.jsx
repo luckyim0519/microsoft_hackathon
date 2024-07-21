@@ -38,12 +38,15 @@ class MapComponent extends React.Component {
       });
 
       try {
-        const response = await axios.get('https://api.unsplash.com/photos/random', {
-          params: {
-            query: `${location.name}`, // Replace with your query
-            client_id: 'A94WrKCk5YHTPvyjpzlwIzXd-HtHDSqP1LNCVvGI1nI', // Replace with your Unsplash Access Key
+        const response = await axios.get(
+          "https://api.unsplash.com/photos/random",
+          {
+            params: {
+              query: `${location.name}`, // Replace with your query
+              client_id: "91OB51_j4Er03DZxO-FM8i1LkZZWzTvqkGqW64pOeKA", // Replace with your Unsplash Access Key
+            },
           }
-        });
+        );
     
         // Handle the response data
         console.log(response.data);
@@ -53,11 +56,17 @@ class MapComponent extends React.Component {
     
         // Use the imageUrl in your component state or JSX rendering
         // setState({ imageUrl });
+        // const infowindow = new google.maps.InfoWindow({
+        //     content: `
+        //     <div>
+        //       <h2>${location.name}</h2>
+        //       <p>${location.address}</p>
+        //       <img src = "${imageUrl}" style={{ width: '50px', height: '200px' }}</img>
+        //     </div>`
+        //   });
         const infowindow = new google.maps.InfoWindow({
             content: `
             <div>
-              <h2>${location.name}</h2>
-              <p>${location.address}</p>
               <img src = "${imageUrl}" style={{ width: '50px', height: '200px' }}</img>
             </div>`
           });
