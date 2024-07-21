@@ -29,13 +29,33 @@ class MapComponent extends React.Component {
   };
 
   renderMarkers = (map, locations) => {
-    locations.forEach(location => {
+    locations.forEach(async location => {
       const marker = new google.maps.Marker({
         position: { lat: location.lat, lng: location.lng },
         map: map,
         title: location.name
       });
 
+    //   try {
+    //     const response = await axios.get('https://api.unsplash.com/photos/random', {
+    //       params: {
+    //         query: `${location.name}`, // Replace with your query
+    //         client_id: '91OB51_j4Er03DZxO-FM8i1LkZZWzTvqkGqW64pOeKA', // Replace with your Unsplash Access Key
+    //       }
+    //     });
+    
+    //     // Handle the response data
+    //     console.log(response.data);
+    
+    //     // Process the response data as needed (extract image URLs, etc.)
+    //     const imageUrl = response.data.urls.regular; // Example: accessing regular-sized image
+    
+    //     // Use the imageUrl in your component state or JSX rendering
+    //     // setState({ imageUrl });
+    
+    //   } catch (error) {
+    //     console.error('Error fetching images from Unsplash:', error);
+    //   }
 
       const infowindow = new google.maps.InfoWindow({
         content: `

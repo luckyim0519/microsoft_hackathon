@@ -5,15 +5,14 @@ import OpenAI from "openai";
 import Lottie from "react-lottie";
 import preloader from "../assets/preloader.json";
 
-
-
 function Results() {
   const { state: { response } = {} } = useLocation();
   const [itinerary, setItinerary] = useState("");
   const [history, setHistory] = useState("");
   const [recommendations, setRecommendations] = useState([]);
   const [finalLocations, setFinalLocations] = useState([]);
-  
+  const [loading, setLoading] = useState(true); // State to manage loading animation
+
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -40,6 +39,8 @@ function Results() {
         const locationsText = responseText.substring(startIndex, endIndex + 1);
 
         const locations = JSON.parse(locationsText);
+        console.log(locations)
+
         setFinalLocations(locations);
 
         const recommendationText = responseText.substring(endIndex + 1).trim();
@@ -47,8 +48,10 @@ function Results() {
         setRecommendations(parsedRecommendations);
 
         setItinerary(completion.choices[0].message.content);
+        setLoading(false); // Set loading state to false after data is fetched
       } catch (error) {
         console.error('Error fetching recommendations from OpenAI:', error);
+        setLoading(false); // Ensure loading state is false even on error
       }
     }
 
@@ -71,7 +74,7 @@ function Results() {
 
   return (
     <div className='h-screen max-h-svh min-h-svh'>
-      {itinerary.length == 0 ? (
+      {loading ? ( // Display loading animation while fetching data
         <div className="flex flex-col gap-8 text-center m-auto pt-48">
           <h1 className="text-2xl font-semibold">
             AI is planning your itinerary
