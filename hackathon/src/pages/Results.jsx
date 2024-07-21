@@ -19,6 +19,7 @@ function Results() {
   const { state: { response } = {} } = useLocation();
 
   const [itinerary, setItinerary] = useState("");
+  const [finalLocations, setFinalLocations] = useState("")
 
   console.log(response)
 
@@ -36,6 +37,7 @@ function Results() {
         model: "gpt-4o-mini",
       });
 
+<<<<<<< HEAD
       const location = completion.choices[0].message.content;
       const first = location.indexOf("[");
       const end = location.indexOf("]");
@@ -49,6 +51,16 @@ function Results() {
         setItinerary("Error parsing itinerary.");
       }
   
+=======
+      const location = completion.choices[0].message.content
+      const first = location.indexOf("[")
+      const end = location.indexOf("]")
+      const locationsText = location.substring(first, end + 1);
+      const finalLocations = JSON.parse(locationsText);
+      console.log(finalLocations);
+      setFinalLocations(finalLocations)
+
+>>>>>>> 600bc265f225178aad0a8cacff1909bb03a071cd
       console.log(completion.choices[0]);
     }
   
