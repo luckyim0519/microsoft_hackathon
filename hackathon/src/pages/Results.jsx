@@ -10,9 +10,13 @@ function Results() {
   const [itinerary, setItinerary] = useState([]);
   const [history, setHistory] = useState("");
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   const [recommendations, setRecommendations] = useState([]);
   const [finalLocations, setFinalLocations] = useState([]);
   const [loading, setLoading] = useState(true); // State to manage loading animation
+=======
+  const [coords, setCoords] = useState([]);
+>>>>>>> Stashed changes
 =======
   const [coords, setCoords] = useState([]);
 >>>>>>> Stashed changes
@@ -54,6 +58,7 @@ function Results() {
         const locationsText = responseText.substring(startIndex, endIndex + 1);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         const locations = JSON.parse(locationsText);
         console.log(locations)
 
@@ -84,6 +89,24 @@ function Results() {
       } catch (error) {
         console.error("Error fetching recommendations from OpenAI:", error);
 >>>>>>> Stashed changes
+=======
+        const itineraryObj = JSON.parse(locationsText);
+        setItinerary(itineraryObj);
+
+        const coordinates = itineraryObj.map((day) =>
+          day.locations.map((location) => ({
+            lat: location.lat,
+            lng: location.lng,
+          }))
+        );
+
+        setCoords(coordinates.flat())
+        console.log(coordinates)
+
+
+      } catch (error) {
+        console.error("Error fetching recommendations from OpenAI:", error);
+>>>>>>> Stashed changes
       }
     }
 
@@ -110,6 +133,7 @@ function Results() {
   }, []);
 
   return (
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     <div className='h-screen max-h-svh min-h-svh'>
       {loading ? ( // Display loading animation while fetching data
@@ -138,6 +162,8 @@ function Results() {
           <p>{itinerary}</p>
           {finalLocations.length > 0 && (
 =======
+=======
+>>>>>>> Stashed changes
     <div>
       <div>
         {itinerary.length == 0 || coords.length == 0 ? (
@@ -152,6 +178,9 @@ function Results() {
             <p>This trip is powered by AI</p>
             <h1 className="text-4xl font-bold">Your trip to {response.destination}</h1>
             <p>{history}</p>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             <div>
               <ul>
