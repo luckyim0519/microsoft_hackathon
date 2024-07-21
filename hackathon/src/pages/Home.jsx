@@ -10,7 +10,7 @@ function Home() {
         <div className="flex flex-col gap-6 items-start">
           <div className="flex grow-0 flex-row items-center gap-2 text-sm outline outline-gray-400 px-3 py-2 rounded-full bg-white">
             <span>🤖</span>
-            <p>Powered by AI</p>
+            <p>TripPlanner</p>
           </div>
           <h1 className="text-7xl font-bold">Travel Made Seamless</h1>
           <p className="text-2xl text-gray-800">

@@ -43,7 +43,7 @@ class MapComponent extends React.Component {
           {
             params: {
               query: `${location.name}`, // Replace with your query
-              client_id: "91OB51_j4Er03DZxO-FM8i1LkZZWzTvqkGqW64pOeKA", // Replace with your Unsplash Access Key
+              client_id: "janEZZpRYr4k1VVNqMXaAd0QmYWonQF0wgaHQiOiLiA", // Replace with your Unsplash Access Key
             },
           }
         );
