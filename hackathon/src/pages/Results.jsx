@@ -19,16 +19,15 @@ function Results() {
   const { state: { response } = {} } = useLocation();
 
   const [itinerary, setItinerary] = useState("");
-  const [finalLocations, setFinalLocations] = useState("")
+  const [finalLocation, setFinalLocation] = useState([])
 
-  console.log(response)
 
   useEffect(()=>{
     const key = "";
 
     const openai = new OpenAI({ apiKey: "sk-None-LzkASTDUaEkaIMYZdKhDT3BlbkFJWGAGvI4TnJSw2hZiL1qi", dangerouslyAllowBrowser: true });
 
-    const message = `Help me plan a trip to ${response.destination}. Fill in this list with locations: locations = [{lat: , lng: , name: , address:}]
+    const message = `Help me plan a trip to ${response.destination}. Fill in this list with locations: locations = [{"lat": number, "lng": number, "name": string, "address": string}]
 `;
 
     async function main() {
@@ -41,11 +40,12 @@ function Results() {
       const first = location.indexOf("[")
       const end = location.indexOf("]")
       const locationsText = location.substring(first, end + 1);
+
       const finalLocations = JSON.parse(locationsText);
       console.log(finalLocations);
-      setFinalLocations(finalLocations)
+      setFinalLocation(finalLocations)
 
-      console.log(completion.choices[0]);
+      // console.log(completion.choices[0]);
       setItinerary(completion.choices[0].message.content)
     }
 
@@ -59,7 +59,7 @@ function Results() {
       <p>This trip is powered by AI</p>
       <h1>Your trip to {response.destination}</h1>
       <p>{itinerary}</p>
-      <MapComponent locations={temp} />
+      {finalLocation.length > 0 && <MapComponent google={window.google} locations={finalLocation} />}
     </div>
   )
 }
