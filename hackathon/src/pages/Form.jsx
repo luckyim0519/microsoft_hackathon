@@ -101,7 +101,7 @@ function Form() {
     'Ann Arbor', 'El Monte', 'Round Rock', 'West Jordan', 'Clearwater', 
     'Temecula', 'Carrollton', 'Westminster', 'West Covina', 'Murrieta', 
     'South Bend', 'Richmond', 'Norwalk', 'Daly City', 'Burbank', 
-    'Green Bay', 'Wichita Falls', 'College Station', 'Palm Bay', 'Centennial'
+    'Green Bay', 'Wichita Falls', 'College Station', 'Palm Bay', 'Centennial', 'Toronto','Tokyo'
   ];
   
 
