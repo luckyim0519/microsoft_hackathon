@@ -19,6 +19,7 @@ function Results() {
   const { state: { response } = {} } = useLocation();
 
   const [itinerary, setItinerary] = useState("");
+  const [finalLocations, setFinalLocations] = useState("")
 
   console.log(response)
 
@@ -39,8 +40,10 @@ function Results() {
       const location = completion.choices[0].message.content
       const first = location.indexOf("[")
       const end = location.indexOf("]")
-      // const locationsText = text.substring(first, end + 1);
-      // const finalLocations = JSON.parse(locationsText);
+      const locationsText = location.substring(first, end + 1);
+      const finalLocations = JSON.parse(locationsText);
+      console.log(finalLocations);
+      setFinalLocations(finalLocations)
 
       console.log(completion.choices[0]);
       setItinerary(completion.choices[0].message.content)
