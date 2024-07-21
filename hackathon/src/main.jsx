@@ -1,15 +1,18 @@
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Form from "./pages/Form.jsx";
+import Home from "./pages/Home.jsx";
+import Results from "./pages/Results.jsx";
+import "./index.css";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Switch>
-          <Route path="/">
-            <Form />
-          </Route>
-      </Switch>
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/form" element={<Form />}></Route>
+        <Route path="/results" element={<Results />}></Route>
+      </Routes>
     </BrowserRouter>
   );
 }
