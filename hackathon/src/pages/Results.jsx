@@ -7,18 +7,12 @@ import OpenAI from "openai";
 
 // const url = process.env.REACT_APP_OPENAI_API;
 
-const temp = [
-  { lat: 40.7128, lng: -74.0060, name: 'New York City', address: 'New York, NY' },
-  { lat: 34.0522, lng: -118.2437, name: 'Los Angeles', address: 'Los Angeles, CA' },
-  { lat: 41.8781, lng: -87.6298, name: 'Chicago', address: 'Chicago, IL' }
-  // Add more locations as needed
-];
-
 function Results() {
 
   const { state: { response } = {} } = useLocation();
 
   const [itinerary, setItinerary] = useState("");
+  const [history, setHistory] = useState("");
   const [finalLocation, setFinalLocation] = useState([])
 
 
@@ -36,6 +30,12 @@ function Results() {
         messages: [{ role: "system", content: message }],
         model: "gpt-4o-mini",
       });
+
+      const hist = await openai.chat.completions.create({
+        messages: [{ role: "system", content: `Tell me a little about ${response.destination}` }],
+        model: "gpt-4o-mini",
+      });
+      setHistory(hist.choices[0].message.content)
 
       const location = completion.choices[0].message.content
       const first = location.indexOf("[")
@@ -59,6 +59,7 @@ function Results() {
     <div>
       <p>This trip is powered by AI</p>
       <h1>Your trip to {response.destination} that has {response.activity.join(', ')} activities, with a {response.vibe.join(", ")} vibe, and fits the {response.budget.join(", ")} budget</h1>
+      <h2>{history}</h2>
       <p>{itinerary}</p>
       {finalLocation.length > 0 && <MapComponent google={window.google} locations={finalLocation} />}
     </div>
