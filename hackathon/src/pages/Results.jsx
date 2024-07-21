@@ -97,47 +97,49 @@ function Results() {
           <Lottie options={defaultOptions} width={500} />
         </div>
       ) : (
-        <div>
-          <p>This trip is powered by AI</p>
-          <h1 className="text-4xl font-bold">
-            Your trip to {response.destination}
-          </h1>
-          <p>{history}</p>
+        <div className="flex flex-row">
           <div>
-            <ul>
-              {itinerary.map(function displayItinerary(day, index) {
-                return (
-                  <div key={index}>
-                    <h3 className="text-xl font-bold">{`Day ${day.dayNumber}: ${day.dayTitle}`}</h3>
-                    <p className="mb-4">{day.daySummary}</p>
-                    <ul>
-                      {day.locations.map((location, index) => {
-                        return (
-                          <li
-                            className="flex flex-row gap-8 items-start"
-                            key={index}
-                          >
-                            <p>{index + 1}</p>
-                            <div>
-                              <h4 className="text-lg font-semibold">
-                                {location.name}
-                              </h4>
-                              <p>{location.desc}</p>
-                              <p>{`${location.commute.time} minute ${
-                                location.commute.method == "walking"
-                                  ? "walk"
-                                  : "drive"
-                              }`}</p>
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                );
-              })}
-            </ul>
-            {/* <MapComponent google={window.google} locations={coords} /> */}
+            <div>
+            <p className="text-sm mb-2">This trip is powered by AI</p>
+            <h1 className="text-4xl font-bold mb-4">
+              Your trip to {response.destination}
+            </h1>
+            <p className="mb-4">{history}</p>
+              <ul>
+                {itinerary.map(function displayItinerary(day, index) {
+                  return (
+                    <div key={index} className="mb-8">
+                      <h3 className="text-xl font-bold mb-2">{`Day ${day.dayNumber}: ${day.dayTitle}`}</h3>
+                      <p className="mb-4">{day.daySummary}</p>
+                      <ul>
+                        {day.locations.map((location, index) => {
+                          return (
+                            <li
+                              className="flex flex-row gap-8 items-start mb-4"
+                              key={index}
+                            >
+                              <p>{index + 1}</p>
+                              <div>
+                                <h4 className="text-lg font-semibold">
+                                  {location.name}
+                                </h4>
+                                <p>{location.desc}</p>
+                                <p>{`${location.commute.time} minute ${
+                                  location.commute.method == "walking"
+                                    ? "walk"
+                                    : "drive"
+                                }`}</p>
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  );
+                })}
+              </ul>
+            </div>
+          <MapComponent google={window.google} locations={coords} />
           </div>
         </div>
       )}
