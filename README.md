@@ -1,6 +1,6 @@
 # microsoft_hackathon
 
-### Our Vision
+### :crystal_ball: Our Vision
 
 Our motivation for developing Trip Planner stems from personal experiences that many of us can relate to. Over time, we've encountered numerous challenges when planning trips. Issues like varying budgets, diverse interests, different locations, and preferred vibes among group members often made decision-making quite cumbersome.
 
