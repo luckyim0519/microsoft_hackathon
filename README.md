@@ -1,4 +1,4 @@
-# microsoft_hackathon
+# Microsoft Hackathon
 ![image](https://github.com/user-attachments/assets/19fa469d-0c1e-473e-ac7d-487ff858dd57)
 
 ### :crystal_ball: Our Vision
