@@ -42,9 +42,10 @@ Once generated, you’ll be presented with a day to day plan and Google Map show
 
 <img width="880" alt="image" src="https://github.com/user-attachments/assets/765fc55d-9514-48d0-9334-2f53b690ef2f">
 
+<img width="875" alt="image" src="https://github.com/user-attachments/assets/949c7b02-576f-4ee2-9694-3514569384c2">
+
 Our goal is to make trip planning seamless and enjoyable, ensuring you discover unforgettable destinations that match your preferences perfectly.
 
-<img width="875" alt="image" src="https://github.com/user-attachments/assets/949c7b02-576f-4ee2-9694-3514569384c2">
 
 ### Demo
 [![Watch the video]]([https://youtu.be/vt5fpE0bzSY](https://www.youtube.com/watch?v=8lJ-u36CZIQ))
