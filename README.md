@@ -11,7 +11,7 @@ Beyond just suggesting places, we wanted to enhance the user experience by visua
 Through Trip Planner, we aimed to simplify trip planning and make it more enjoyable and tailored to each individual's preferences. 
 Whether it's finding the perfect spot for adventure seekers, food enthusiasts, or those seeking tranquillity, Trip Planner ensures that everyone’s preferences are accounted for.
 
-### How we conducted our project
+### :bookmark: How we conducted our project
 
 Initially, we conducted a Proof of Concept (POC) phase where we brainstormed various ideas and selected the most promising ones for further exploration. Our focus narrowed down to integrating OpenAI and Google Maps APIs, alongside other complementary libraries.
 
@@ -22,7 +22,7 @@ Navigating these challenges involved overcoming dependency issues and assisting 
 
 
 
-### Our execution
+### :computer: Our execution
 
 On this platform, you can start by entering the city you wish to explore. Our autocomplete feature instantly suggests cities based on your input, making it easier to find your destination.
 
@@ -47,6 +47,6 @@ Once generated, you’ll be presented with a day to day plan and Google Map show
 Our goal is to make trip planning seamless and enjoyable, ensuring you discover unforgettable destinations that match your preferences perfectly.
 
 
-### Demo
+### :fireworks: Demo
 [![Watch the video]]([https://youtu.be/vt5fpE0bzSY](https://www.youtube.com/watch?v=8lJ-u36CZIQ))
 https://www.youtube.com/watch?v=8lJ-u36CZIQ
